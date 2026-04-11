@@ -1,4 +1,4 @@
-# Twitter Ops — AI 驱动的推特内容系统
+#  AI 驱动的推特内容系统
 
 > A Claude Code skill that turns your notes and ideas into publish-ready tweets.
 
