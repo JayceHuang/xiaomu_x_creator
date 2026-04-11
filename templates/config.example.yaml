@@ -1,0 +1,48 @@
+# Twitter Ops 配置文件
+# 复制此文件到你的工作目录，重命名为 config.yaml，修改以下内容
+
+# 工作目录（所有相对路径的基准）
+workspace: ~/xiaomu-x-creator
+
+# 账号信息
+twitter_id: "@YourName"           # 你的推特ID
+content_direction:                 # 你的内容方向（关键词列表）
+  - "AI"
+  - "创业"
+  # - "个人成长"
+  # - "技术"
+
+# 内容来源路径（相对于 workspace）
+sources:
+  notes: sources/notes/            # 随手记的想法、读书笔记、聊天记录
+  articles: sources/articles/      # 你写过的文章、长文
+  clippings: sources/clippings/    # 收藏的别人的好内容
+
+# 产出路径（相对于 workspace）
+output:
+  tweets: tweets/                  # 萃取产出的短推
+  schedule: schedule/              # 排期文件
+  competitors: competitors/        # 对标博主爆款原文
+
+# 排期参数
+scheduling:
+  cycle_days: 14                   # 排期周期（天），默认2周
+  posts_per_day: 4                 # 每天几条
+  time_slots:                      # 发布时间 → 内容类型
+    "08:00": "干货/方法论"          # 早上理性，对利益驱动信息敏感
+    "12:00": "行业观点"            # 午间刷手机高峰，轻量易传播
+    "17:00": "大众话题"            # 下班前情绪切换，容易共鸣
+    "21:00": "深度走心"            # 晚上情绪防线低，适合走心
+
+# 内容配比（百分比，合计100）
+content_mix:
+  original: 50                     # 从你的素材萃取的原创内容
+  trending: 25                     # 泛内容 / 热点话题
+  rewrite: 25                      # 对标博主爆款改写
+
+# 查重设置
+dedup:
+  window_days: 14                  # 查重覆盖最近几天的已发内容
+  scope:                           # 查重粒度
+    - "选题"                       # 同一选题避开
+    - "角度"                       # 同一角度避开（同选题不同角度可以）
