@@ -1,0 +1,97 @@
+<svg width="420" height="140" viewBox="0 0 420 140" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    dashen.wang brand logo
+    AI最严厉的父亲 · @dashen_wang
+    For use in PDF reports — black on white version
+  -->
+
+  <!-- Outer border box -->
+  <rect x="1" y="1" width="418" height="138" rx="4" fill="white" stroke="#111" stroke-width="1.5"/>
+
+  <!-- Left character block background -->
+  <rect x="1" y="1" width="110" height="138" rx="4" fill="#111"/>
+  <!-- Right edge mask for left block -->
+  <rect x="105" y="1" width="8" height="138" fill="#111"/>
+
+  <!-- ── CHARACTER (white on black) ── -->
+  <!-- Head -->
+  <ellipse cx="56" cy="42" rx="22" ry="26" fill="white"/>
+  <!-- Hair -->
+  <ellipse cx="56" cy="24" rx="22" ry="12" fill="#333"/>
+  <rect x="34" y="22" width="44" height="10" fill="#333"/>
+  <!-- Face -->
+  <ellipse cx="56" cy="46" rx="17" ry="17" fill="#eee"/>
+  <!-- Glasses left -->
+  <rect x="38" y="40" width="12" height="8" rx="1.5" fill="none" stroke="#222" stroke-width="1.8"/>
+  <!-- Glasses right -->
+  <rect x="52" y="40" width="12" height="8" rx="1.5" fill="none" stroke="#222" stroke-width="1.8"/>
+  <!-- Bridge -->
+  <line x1="50" y1="44" x2="52" y2="44" stroke="#222" stroke-width="1.5"/>
+  <!-- Temples -->
+  <line x1="38" y1="44" x2="32" y2="44" stroke="#222" stroke-width="1.5"/>
+  <line x1="64" y1="44" x2="70" y2="44" stroke="#222" stroke-width="1.5"/>
+  <!-- Eyes -->
+  <ellipse cx="44" cy="44" rx="2.5" ry="2" fill="#333"/>
+  <ellipse cx="58" cy="44" rx="2.5" ry="2" fill="#333"/>
+  <!-- Glare -->
+  <ellipse cx="43" cy="43.2" rx="1" ry="0.7" fill="white" opacity="0.9"/>
+  <ellipse cx="57" cy="43.2" rx="1" ry="0.7" fill="white" opacity="0.9"/>
+  <!-- Mouth -->
+  <line x1="49" y1="53" x2="63" y2="53" stroke="#bbb" stroke-width="1"/>
+  <!-- Neck -->
+  <rect x="49" y="64" width="14" height="10" fill="#ddd"/>
+  <!-- Suit -->
+  <path d="M24 118 Q28 78 38 76 L46 84 L56 78 L66 84 L74 76 Q84 78 88 118 Z" fill="#222"/>
+  <!-- Shirt collar white -->
+  <path d="M46 82 L53 93 L59 82 Q56 78 53 80 Q50 78 46 82Z" fill="white"/>
+  <!-- Tie -->
+  <path d="M53 91 L55 106 L53 109 L51 106 Z" fill="#555"/>
+  <!-- Left hand/arm -->
+  <path d="M32 104 Q35 94 42 90 L52 89 L52 93 L43 95 Q38 99 35 107Z" fill="#ddd"/>
+  <!-- Right hand/arm -->
+  <path d="M80 104 Q77 94 70 90 L60 89 L60 93 L69 95 Q74 99 77 107Z" fill="#ddd"/>
+  <!-- Left hand block -->
+  <rect x="42" y="85" width="18" height="10" rx="2.5" fill="#ddd"/>
+  <!-- Right hand block -->
+  <rect x="52" y="85" width="18" height="10" rx="2.5" fill="#ddd"/>
+  <!-- Overlap -->
+  <rect x="50" y="85" width="6" height="10" rx="1.5" fill="#ccc"/>
+  <!-- Finger lines left -->
+  <line x1="46" y1="86" x2="46" y2="94" stroke="#bbb" stroke-width="0.7"/>
+  <line x1="50" y1="86" x2="50" y2="94" stroke="#bbb" stroke-width="0.7"/>
+  <!-- Finger lines right -->
+  <line x1="58" y1="86" x2="58" y2="94" stroke="#bbb" stroke-width="0.7"/>
+  <line x1="62" y1="86" x2="62" y2="94" stroke="#bbb" stroke-width="0.7"/>
+
+  <!-- ── DIVIDER ── -->
+  <line x1="113" y1="16" x2="113" y2="124" stroke="#ddd" stroke-width="0.8"/>
+
+  <!-- ── TEXT BLOCK ── -->
+  <!-- Main Chinese name -->
+  <text x="126" y="55"
+        font-family="'WenQuanYi Zen Hei','Noto Sans CJK SC',serif"
+        font-size="19" font-weight="bold" fill="#111" letter-spacing="1">AI最严厉的父亲</text>
+
+  <!-- English domain -->
+  <text x="127" y="77"
+        font-family="'Courier New',monospace"
+        font-size="11" fill="#555" letter-spacing="3">dashen.wang</text>
+
+  <!-- Top rule -->
+  <line x1="126" y1="34" x2="408" y2="34" stroke="#111" stroke-width="1"/>
+  <!-- Mid rule -->
+  <line x1="126" y1="86" x2="408" y2="86" stroke="#ddd" stroke-width="0.6"/>
+
+  <!-- Tagline -->
+  <text x="127" y="100"
+        font-family="'WenQuanYi Zen Hei','Noto Sans CJK SC',serif"
+        font-size="8.5" fill="#888" letter-spacing="1">X 内容作战计划生成系统  ·  @dashen_wang</text>
+
+  <!-- Bottom tagline -->
+  <text x="127" y="116"
+        font-family="'Courier New',monospace"
+        font-size="8" fill="#aaa" letter-spacing="1.5">dashen-x-battle-plan  ·  powered by Claude</text>
+
+  <!-- Bottom rule -->
+  <line x1="126" y1="122" x2="408" y2="122" stroke="#ddd" stroke-width="0.6"/>
+</svg>

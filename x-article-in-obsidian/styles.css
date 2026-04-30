@@ -1,0 +1,643 @@
+.x-article-preview-view {
+	height: 100%;
+	overflow: auto;
+	background:
+		radial-gradient(circle at top, rgba(29, 155, 240, 0.12), transparent 32%),
+		var(--background-primary);
+}
+
+.x-article-shell {
+	min-height: 100%;
+	padding: 28px 20px 44px;
+}
+
+.x-article-chrome {
+	display: grid;
+	gap: 14px;
+	margin: 0 auto 18px;
+	max-width: 684px;
+}
+
+.x-article-toolbar {
+	position: sticky;
+	top: 12px;
+	z-index: 10;
+	display: flex;
+	justify-content: flex-start;
+	gap: 10px;
+	margin: 0 auto 14px;
+	max-width: 684px;
+	pointer-events: none;
+}
+
+.x-article-toolbar__button {
+	pointer-events: auto;
+	padding: 9px 15px;
+	border: 0;
+	border-radius: 999px;
+	background: color-mix(in srgb, var(--background-primary) 78%, #1d9bf0 22%);
+	color: var(--text-normal);
+	box-shadow: 0 8px 24px rgba(15, 20, 25, 0.12);
+	backdrop-filter: blur(10px);
+	font: 700 12px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	cursor: pointer;
+}
+
+.x-article-toolbar__button.mod-primary {
+	background: #1d9bf0;
+	color: #fff;
+}
+
+.x-article-toolbar__button:disabled {
+	opacity: 0.65;
+	cursor: default;
+}
+
+.x-article-hero {
+	overflow: hidden;
+	border: 1px solid rgba(15, 20, 25, 0.08);
+	border-radius: 20px;
+	background: var(--background-primary);
+	box-shadow: 0 10px 30px rgba(15, 20, 25, 0.06);
+}
+
+.x-article-hero__cover {
+	position: relative;
+	height: 0;
+	padding-bottom: 40%;
+	background:
+		linear-gradient(135deg, rgba(29, 155, 240, 0.35), rgba(15, 20, 25, 0.12)),
+		linear-gradient(180deg, rgba(15, 20, 25, 0.04), rgba(15, 20, 25, 0.16));
+	background-size: cover;
+	background-position: center;
+}
+
+.x-article-hero__cover.has-image {
+	background-image:
+		linear-gradient(180deg, rgba(15, 20, 25, 0.06), rgba(15, 20, 25, 0.16)),
+		var(--x-article-cover-image);
+}
+
+.x-article-hero__badge {
+	position: absolute;
+	right: 16px;
+	bottom: 16px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 12px;
+	border-radius: 999px;
+	background: rgba(15, 20, 25, 0.72);
+	backdrop-filter: blur(8px);
+}
+
+.x-article-hero__label {
+	color: rgb(255, 255, 255);
+	font: 700 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	letter-spacing: 0.01em;
+}
+
+.x-article-hero__body {
+	padding: 18px 18px 20px;
+}
+
+.x-article-hero__title {
+	color: rgb(15, 20, 25);
+	font: 700 24px/1.25 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.x-article-hero__summary {
+	display: -webkit-box;
+	margin-top: 10px;
+	overflow: hidden;
+	color: rgb(15, 20, 25);
+	font: 400 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	white-space: pre-line;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 4;
+}
+
+.x-article-card {
+	margin: 0 auto;
+	width: 684px;
+	max-width: 684px;
+	border: 1px solid rgba(15, 20, 25, 0.08);
+	border-radius: 26px;
+	background: var(--background-primary);
+	box-shadow: 0 20px 50px rgba(15, 20, 25, 0.08);
+	overflow: hidden;
+}
+
+.theme-dark .x-article-card {
+	border-color: rgba(231, 233, 234, 0.1);
+	box-shadow: none;
+}
+
+.theme-dark .x-article-hero {
+	border-color: rgba(231, 233, 234, 0.1);
+	box-shadow: none;
+}
+
+.theme-dark .x-article-toolbar__button {
+	background: color-mix(in srgb, var(--background-secondary) 84%, #1d9bf0 16%);
+	box-shadow: none;
+}
+
+.theme-dark .x-article-toolbar__button.mod-primary {
+	background: #1d9bf0;
+}
+
+.theme-dark .x-article-hero__title,
+.theme-dark .x-article-hero__summary {
+	color: rgb(231, 233, 234);
+}
+
+.x-article-draft-notice {
+	padding: 18px 48px 0;
+	color: var(--text-muted);
+	font: 500 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.x-article-draft-notice.is-hidden {
+	display: none;
+}
+
+.x-article-body {
+	color: rgb(15, 20, 25);
+}
+
+.theme-dark .x-article-body {
+	color: rgb(231, 233, 234);
+}
+
+.x-article-body.is-empty {
+	padding: 56px 32px 72px;
+}
+
+.x-article-empty {
+	padding: 24px 28px;
+	border: 1px dashed rgba(15, 20, 25, 0.14);
+	border-radius: 18px;
+	background: rgba(29, 155, 240, 0.04);
+	color: var(--text-muted);
+	font: 500 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	text-align: center;
+}
+
+.x-article-guide-modal .modal {
+	width: min(680px, calc(100vw - 40px));
+}
+
+.x-article-guide-modal__header {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	margin-bottom: 18px;
+}
+
+.x-article-guide-modal__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 42px;
+	height: 42px;
+	border-radius: 12px;
+	background: rgba(29, 155, 240, 0.12);
+	color: #1d9bf0;
+}
+
+.x-article-guide-modal__icon svg {
+	width: 22px;
+	height: 22px;
+}
+
+.x-article-guide-modal__heading h2 {
+	margin: 0;
+	font-size: 24px;
+	line-height: 1.2;
+}
+
+.x-article-guide-modal__section + .x-article-guide-modal__section {
+	margin-top: 18px;
+}
+
+.x-article-guide-modal__section h3 {
+	margin: 0 0 8px;
+	font-size: 16px;
+}
+
+.x-article-guide-modal__section ul {
+	margin: 0;
+	padding-left: 20px;
+}
+
+.x-article-guide-modal__section li {
+	margin-bottom: 8px;
+	line-height: 1.6;
+}
+
+.x-article-template .public-DraftEditor-content {
+	width: 100%;
+	max-width: 684px;
+	padding-left: 48px;
+	padding-right: 48px;
+	padding-top: 20px;
+	padding-bottom: 80px;
+	box-sizing: border-box;
+}
+
+.x-article-template .DraftEditor-editorContainer,
+.x-article-template .DraftEditor-root,
+.x-article-template .public-DraftEditor-content {
+	height: inherit;
+	max-height: inherit;
+	min-height: inherit;
+	text-align: initial;
+}
+
+.x-article-template .DraftEditor-root {
+	position: relative;
+	width: 100%;
+	-webkit-user-select: none;
+}
+
+.x-article-template .DraftEditor-editorContainer {
+	position: relative;
+	z-index: 1;
+	background-color: rgba(255, 255, 255, 0);
+	border-left: 0.1px solid transparent;
+}
+
+.x-article-template .public-DraftStyleDefault-block {
+	position: relative;
+	overflow: hidden;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	white-space: pre-wrap;
+}
+
+.x-article-template .public-DraftStyleDefault-ltr {
+	direction: ltr;
+	text-align: left;
+}
+
+.x-article-template .DraftEditor-editorContainer a {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	margin-top: inherit;
+	margin-bottom: inherit;
+}
+
+.x-article-template .longform-header-one {
+	margin-top: 0;
+	margin-bottom: 28px;
+	font-size: 31px;
+	font-weight: 800;
+	line-height: 40px;
+}
+
+.x-article-template .longform-header-two {
+	margin-top: 0;
+	margin-bottom: 28px;
+	font-size: 26px;
+	font-weight: 800;
+	line-height: 36px;
+}
+
+.x-article-template .longform-unstyled,
+.x-article-template .longform-blockquote {
+	margin-top: 0;
+	margin-bottom: 28px;
+	font-size: 17px;
+	line-height: 28px;
+}
+
+.x-article-template .longform-unordered-list-item,
+.x-article-template .longform-ordered-list-item {
+	display: block;
+	position: relative;
+	margin-top: 0;
+	margin-bottom: 12px;
+	margin-left: calc(28px + 2px);
+	font-size: 17px;
+	line-height: 28px;
+}
+
+.x-article-template .longform-blockquote {
+	position: relative;
+	margin-top: calc(-2px);
+	margin-bottom: calc(24px + 2px);
+	margin-left: 0;
+	padding-left: calc(24px + 3px);
+}
+
+.x-article-template .longform-blockquote .public-DraftStyleDefault-block,
+.x-article-template .longform-blockquote p,
+.x-article-template .longform-blockquote span {
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.x-article-template .longform-blockquote .public-DraftStyleDefault-block,
+.x-article-template .longform-blockquote p {
+	white-space: normal;
+	overflow-wrap: break-word;
+	word-break: normal;
+}
+
+.x-article-template .longform-blockquote p,
+.x-article-template .longform-blockquote blockquote {
+	margin: 0;
+}
+
+.x-article-template .longform-blockquote::before {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 3px;
+	border-radius: 9999px;
+	background: #37434d;
+	content: "";
+}
+
+.x-article-template .longform-header-one .public-DraftStyleDefault-block,
+.x-article-template .longform-header-two .public-DraftStyleDefault-block,
+.x-article-template .longform-unstyled .public-DraftStyleDefault-block,
+.x-article-template .longform-unordered-list-item .public-DraftStyleDefault-block,
+.x-article-template .longform-ordered-list-item .public-DraftStyleDefault-block {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.x-article-template .x-article-paragraph .public-DraftStyleDefault-block,
+.x-article-template .x-article-paragraph p {
+	white-space: normal;
+	overflow-wrap: break-word;
+	word-break: normal;
+}
+
+.x-article-template .x-article-paragraph p {
+	margin: 0;
+}
+
+.x-article-template .public-DraftStyleDefault-ul,
+.x-article-template .public-DraftStyleDefault-ol {
+	margin-top: 0;
+	margin-bottom: 28px;
+	padding-left: 0;
+	counter-reset: item;
+}
+
+.x-article-template .longform-unordered-list-item::before,
+.x-article-template .longform-ordered-list-item::before {
+	position: absolute;
+	margin-left: calc(-1 * (28px + 2px));
+}
+
+.x-article-template .longform-unordered-list-item::before {
+	font-size: 23px;
+	content: counter(item, disc);
+}
+
+.x-article-template .longform-ordered-list-item::before {
+	content: counter(item) ". ";
+	counter-increment: item;
+}
+
+.x-article-template p,
+.x-article-template blockquote,
+.x-article-template li,
+.x-article-template a,
+.x-article-template span,
+.x-article-template strong,
+.x-article-template em,
+.x-article-template s {
+	color: inherit;
+}
+
+.x-article-template a {
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.x-article-template a.external-link::after,
+.x-article-template a .external-link-icon,
+.x-article-template .external-link-icon {
+	display: none !important;
+	content: none !important;
+}
+
+.x-article-template a.external-link,
+.x-article-template .markdown-rendered a.external-link {
+	padding-right: 0 !important;
+	background-image: none !important;
+	background: none !important;
+	-webkit-mask-image: none !important;
+	mask-image: none !important;
+}
+
+.x-article-template a.external-link::before,
+.x-article-template a.external-link::after,
+.x-article-template .markdown-rendered a.external-link::before,
+.x-article-template .markdown-rendered a.external-link::after {
+	display: none !important;
+	content: none !important;
+	background: none !important;
+	background-image: none !important;
+	-webkit-mask-image: none !important;
+	mask-image: none !important;
+}
+
+.x-article-template .x-article-code-frame,
+.x-article-template .x-post-embed,
+.x-article-template .x-post-card,
+.x-article-template .x-article-figure,
+.x-article-template table,
+.x-article-template .x-article-separator {
+	margin-top: 0;
+	margin-bottom: 28px;
+}
+
+.x-article-template .x-post-embed {
+	display: flex;
+	justify-content: center;
+}
+
+.x-article-template .x-post-embed__loading {
+	padding: 14px 16px;
+	border: 1px dashed rgba(15, 20, 25, 0.12);
+	border-radius: 16px;
+	color: rgb(83, 100, 113);
+	font:
+		500 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+		sans-serif;
+}
+
+.x-article-template .x-article-separator {
+	width: 100%;
+	height: 1px;
+	background-color: rgb(239, 243, 244);
+}
+
+.theme-dark .x-article-template .x-article-separator {
+	background-color: rgba(231, 233, 234, 0.18);
+}
+
+.x-article-template img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border-radius: 16px;
+}
+
+.x-article-template pre > button,
+.x-article-template pre .copy-code-button,
+.x-article-template .markdown-rendered pre button {
+	display: none !important;
+}
+
+.x-article-template .x-article-figure {
+	margin-top: 32px;
+}
+
+.x-article-template .x-article-figcaption {
+	margin-top: 12px;
+	color: rgb(83, 100, 113);
+	font-size: 14px;
+	line-height: 1.5;
+	text-align: center;
+}
+
+.theme-dark .x-article-template .x-article-figcaption {
+	color: rgb(113, 118, 123);
+}
+
+.x-article-template .x-post-card {
+	padding: 16px;
+	border: 1px solid rgba(15, 20, 25, 0.08);
+	border-radius: 20px;
+	background: rgba(29, 155, 240, 0.04);
+}
+
+.theme-dark .x-article-template .x-post-card {
+	border-color: rgba(231, 233, 234, 0.1);
+	background: rgba(29, 155, 240, 0.08);
+}
+
+.x-article-template .x-post-card__header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 14px;
+}
+
+.x-article-template .x-post-card__avatar {
+	flex: 0 0 auto;
+	width: 40px;
+	height: 40px;
+	border-radius: 999px;
+	background: linear-gradient(135deg, #1d9bf0, #7dc3f7);
+}
+
+.x-article-template .x-post-card__name {
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.25;
+}
+
+.x-article-template .x-post-card__handle,
+.x-article-template .x-post-card__id {
+	color: rgb(83, 100, 113);
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+.theme-dark .x-article-template .x-post-card__handle,
+.theme-dark .x-article-template .x-post-card__id {
+	color: rgb(113, 118, 123);
+}
+
+.x-article-template .x-post-card__body {
+	font-size: 16px;
+	line-height: 1.6;
+}
+
+.x-article-template .x-post-card__footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-top: 16px;
+	padding-top: 14px;
+	border-top: 1px solid rgba(15, 20, 25, 0.08);
+}
+
+.theme-dark .x-article-template .x-post-card__footer {
+	border-top-color: rgba(231, 233, 234, 0.1);
+}
+
+.x-article-template .x-post-card__link {
+	color: #1d9bf0;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+.x-article-template .x-post-card__link:hover {
+	text-decoration: underline;
+}
+
+.x-article-template table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 16px;
+}
+
+.x-article-template th,
+.x-article-template td {
+	padding: 12px 14px;
+	border-bottom: 1px solid rgba(15, 20, 25, 0.08);
+	text-align: left;
+}
+
+.theme-dark .x-article-template th,
+.theme-dark .x-article-template td {
+	border-bottom-color: rgba(231, 233, 234, 0.1);
+}
+
+.x-article-template th {
+	color: rgb(83, 100, 113);
+	font-weight: 700;
+}
+
+.theme-dark .x-article-template th {
+	color: rgb(113, 118, 123);
+}
+
+@media (max-width: 760px) {
+	.x-article-shell {
+		padding: 16px 10px 28px;
+	}
+
+	.x-article-chrome {
+		gap: 12px;
+	}
+
+	.x-article-card {
+		width: 100%;
+		max-width: 684px;
+		border-radius: 20px;
+	}
+
+	.x-article-draft-notice {
+		padding: 16px 24px 0;
+	}
+
+	.x-article-template .public-DraftEditor-content {
+		padding-left: 24px;
+		padding-right: 24px;
+		padding-bottom: 56px;
+	}
+}

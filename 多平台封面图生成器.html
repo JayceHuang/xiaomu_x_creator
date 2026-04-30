@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>多平台封面图生成器 · X / 抖音横竖版</title>
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+<style>
+  :root{
+    --ui-bg:#0e0e0e; --ui-panel:#1a1a1a; --ui-border:#2a2a2a;
+    --ui-text:#e8e8e8; --ui-muted:#888; --ui-accent:#4a9d7f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    background:var(--ui-bg);color:var(--ui-text);min-height:100vh;padding:24px;
+  }
+  .wrap{max-width:1400px;margin:0 auto}
+  h1{font-size:20px;font-weight:500;margin-bottom:4px}
+  .sub{color:var(--ui-muted);font-size:13px;margin-bottom:24px}
+  .layout{display:grid;grid-template-columns:300px 300px 1fr;gap:20px}
+  @media (max-width:1200px){.layout{grid-template-columns:1fr 1fr;}.preview-wrap{grid-column:1/-1}}
+  @media (max-width:720px){.layout{grid-template-columns:1fr}.preview-wrap{grid-column:auto}}
+  .panel-title{font-size:12px;color:var(--ui-muted);letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--ui-border)}
+
+  .panel{background:var(--ui-panel);border:1px solid var(--ui-border);border-radius:12px;padding:20px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12px;color:var(--ui-muted);margin-bottom:6px;letter-spacing:.05em}
+  .field input,.field select,.field textarea{
+    width:100%;background:#121212;border:1px solid var(--ui-border);color:var(--ui-text);
+    padding:10px 12px;border-radius:8px;font-size:14px;font-family:inherit;
+  }
+  .field textarea{resize:vertical;min-height:60px}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--ui-accent)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hint{font-size:11px;color:#666;margin-top:4px;line-height:1.5}
+
+  button{
+    width:100%;background:var(--ui-accent);color:#fff;border:none;padding:12px;
+    border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;margin-top:8px;
+  }
+  button:hover{opacity:.9}
+  button.sec{background:transparent;border:1px solid var(--ui-border);color:var(--ui-text)}
+
+  .preview-wrap{background:var(--ui-panel);border:1px solid var(--ui-border);border-radius:12px;padding:20px;overflow:auto}
+  .preview-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:12px;color:var(--ui-muted)}
+
+  /* ===== 尺寸选择器 Tab ===== */
+  .size-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:16px}
+  .size-tab{
+    background:#121212;border:1px solid var(--ui-border);color:var(--ui-muted);
+    padding:10px 6px;border-radius:8px;cursor:pointer;text-align:center;
+    font-size:12px;line-height:1.4;transition:all .15s;
+  }
+  .size-tab:hover{color:var(--ui-text);border-color:#444}
+  .size-tab.active{background:var(--ui-accent);color:#fff;border-color:var(--ui-accent)}
+  .size-tab .tab-name{display:block;font-weight:500;font-size:13px;margin-bottom:2px}
+  .size-tab .tab-spec{display:block;font-size:10px;opacity:.75;font-family:Menlo,monospace}
+
+  /* ===== 封面图核心样式 ===== */
+  #cover{
+    position:relative;overflow:hidden;
+    transform-origin:top left;
+    font-family:"Noto Serif SC","Source Han Serif SC","Songti SC",serif;
+  }
+  #cover .bg-char{
+    position:absolute;line-height:.85;
+    opacity:.055;letter-spacing:-.05em;white-space:nowrap;pointer-events:none;
+    font-family:"Noto Serif SC","Source Han Serif SC","Songti SC",serif;
+    font-weight:900;
+  }
+  #cover .bg-grad{position:absolute;inset:0;pointer-events:none}
+  #cover .bg-pattern{position:absolute;inset:0;pointer-events:none;z-index:1}
+  #cover .content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  #cover .tag{
+    font-family:-apple-system,"Helvetica Neue",sans-serif;
+    font-weight:400;text-transform:uppercase;
+  }
+  #cover .lead{
+    font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;
+    font-weight:300;
+  }
+  #cover .main{
+    font-weight:900;line-height:1.15;letter-spacing:.02em;
+    font-family:"Noto Serif SC","Source Han Serif SC","Songti SC",serif;
+  }
+  #cover .main .hl{font-weight:900}
+  #cover .sign{
+    font-family:-apple-system,"Helvetica Neue",sans-serif;
+    font-weight:400;
+  }
+  #cover .sign .dot{margin:0 .6em;vertical-align:middle;opacity:.7}
+
+  .scale-host{background:#000;border-radius:8px;overflow:hidden;display:flex;justify-content:center;align-items:flex-start;padding:10px;min-height:300px}
+  .scale-inner{position:relative}
+
+  .palette-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;max-height:280px;overflow-y:auto;padding-right:4px}
+  .swatch{aspect-ratio:5/2;border-radius:6px;cursor:pointer;position:relative;border:2px solid transparent;overflow:hidden}
+  .swatch.active{border-color:var(--ui-accent)}
+  .swatch .label{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:3px 4px;text-align:center}
+
+  /* 抖音竖版的"安全区"提示框（仅预览时显示，不参与导出） */
+  .safe-zone-hint{
+    position:absolute;pointer-events:none;z-index:10;
+    border:2px dashed rgba(255,80,80,.5);
+    display:none;
+  }
+  .safe-zone-hint::after{
+    content:'抖音 UI 遮挡区（仅预览）';
+    position:absolute;top:8px;left:8px;
+    background:rgba(255,80,80,.85);color:#fff;
+    font-size:18px;padding:4px 10px;border-radius:4px;
+    font-family:-apple-system,sans-serif;white-space:nowrap;
+  }
+  body.show-safe-zone .safe-zone-hint{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>多平台封面图生成器</h1>
+  <div class="sub">推特横版 / 抖音竖版 / 抖音横版 一键切换 → 输入标题 → 选配色 → 导出 PNG</div>
+
+  <div class="layout">
+    <!-- 第一列：尺寸 + 文案 -->
+    <div class="panel">
+      <div class="panel-title">📐 尺寸规格</div>
+      <div class="size-tabs" id="size-tabs"></div>
+
+      <div class="panel-title" style="margin-top:8px">✏️ 文案设置</div>
+
+      <div class="field">
+        <label>顶部英文标签</label>
+        <input id="f-tag" value="X ARTICLE">
+      </div>
+
+      <div class="field">
+        <label>引导句（小字细体）</label>
+        <input id="f-lead" value="我为什么要创建一个">
+      </div>
+
+      <div class="field">
+        <label>核心标题（主标题）</label>
+        <textarea id="f-main" rows="2">文科生学`AI`的社群？</textarea>
+        <div class="hint">用 `` 包裹需要着色的文字，例：学如何`赚钱`？<br>抖音竖版可用回车控制断行</div>
+        <div class="row" style="grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <button class="sec" type="button" onclick="randomHighlight()" style="margin:0;padding:8px">🎯 随机高亮</button>
+          <button class="sec" type="button" onclick="clearHighlight()" style="margin:0;padding:8px">↺ 清除高亮</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>背景水印字</label>
+        <input id="f-watermark" value="" maxlength="3" placeholder="留空则使用高亮字首字">
+        <div class="row" style="grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <button class="sec" type="button" onclick="randomWatermark()" style="margin:0;padding:8px">🎯 随机水印</button>
+          <button class="sec" type="button" onclick="clearWatermark()" style="margin:0;padding:8px">↺ 跟随标题</button>
+        </div>
+        <div class="hint">留空：自动用高亮字第一个字；点随机：从标题汉字中抽 1 个</div>
+      </div>
+
+      <div class="field">
+        <label>署名</label>
+        <input id="f-sign" value="得否 · @wangdefou · 2026">
+      </div>
+    </div>
+
+    <!-- 第二列：样式设置 -->
+    <div class="panel">
+      <div class="panel-title">🎨 样式设置</div>
+
+      <div class="field">
+        <label>主字号倍率 <span id="size-mul-label" style="color:var(--ui-text)">1.00x</span></label>
+        <input id="f-size-mul" type="range" min="0.6" max="1.6" step="0.05" value="1">
+        <div class="hint">基于当前规格的推荐字号缩放，0.6×~1.6×</div>
+      </div>
+
+      <div class="field">
+        <label>高亮文字字体</label>
+        <select id="f-hl-font"></select>
+      </div>
+
+      <div class="field">
+        <label>背景花纹</label>
+        <select id="f-pattern">
+          <option value="auto" selected>🎨 自动匹配（跟随配色）</option>
+          <option value="none">无</option>
+          <option value="dots">细点网格</option>
+          <option value="grid">极细线网格</option>
+          <option value="diagonal">对角细线</option>
+          <option value="vlines">竖向细线</option>
+          <option value="noise">颗粒噪点</option>
+          <option value="crosshatch">交叉斜线</option>
+          <option value="corners">四角装饰线</option>
+        </select>
+        <div class="row" style="grid-template-columns:auto 1fr;gap:8px;margin-top:8px;align-items:center">
+          <label style="font-size:12px;color:var(--ui-muted);margin:0">强度</label>
+          <input id="f-pattern-opacity" type="range" min="0" max="100" value="25">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>配色方案（18 套）</label>
+        <select id="f-palette"></select>
+        <div class="palette-grid" id="palette-grid"></div>
+      </div>
+
+      <div class="field" id="safe-zone-field" style="display:none">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+          <input type="checkbox" id="f-safe-zone" checked style="width:auto;margin:0">
+          <span style="color:var(--ui-text)">显示抖音 UI 安全区参考</span>
+        </label>
+        <div class="hint">右下角是抖音 App 中点赞/评论按钮和文案的遮挡区域，导出时不会包含此参考线</div>
+      </div>
+
+      <button onclick="exportPNG()">⬇ 导出 PNG（当前规格）</button>
+      <button class="sec" onclick="randomPalette()">🎲 随机配色</button>
+    </div>
+
+    <!-- 第三列：预览 -->
+    <div class="preview-wrap">
+      <div class="panel-title">👁 效果预览</div>
+      <div class="preview-meta">
+        <span>预览 · <span id="scale-label">32%</span> · <span id="size-spec-label">2500×1000</span></span>
+        <span id="palette-name">墨绿经典</span>
+      </div>
+      <div class="scale-host">
+        <div class="scale-inner" id="scale-inner">
+          <div id="cover">
+            <div class="bg-grad"></div>
+            <div class="bg-pattern" id="c-pattern"></div>
+            <div class="bg-char" id="c-watermark">赚</div>
+            <div class="content" id="c-content">
+              <div class="tag" id="c-tag">X ARTICLE</div>
+              <div class="lead" id="c-lead">我为什么要创建一个</div>
+              <div class="main" id="c-main">文科生学<span class="hl">AI</span>的社群？</div>
+              <div class="sign" id="c-sign">得否<span class="dot">·</span>@wangdefou<span class="dot">·</span>2026</div>
+            </div>
+            <div class="safe-zone-hint" id="safe-zone-hint"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+ * 尺寸规格定义
+ * 不同尺寸有自己的推荐字号、留白、水印大小、安全区
+ * ============================================================ */
+const SIZES = {
+  'x-horizontal': {
+    id:'x-horizontal',
+    name:'推特横版',
+    spec:'2500×1000',
+    width:2500, height:1000,
+    padX:120, padY:0,
+    tagSize:26,    tagMb:60,
+    leadSize:58,   leadMb:30,
+    mainSize:160,
+    signSize:38,   signMt:80,
+    watermarkSize:1000,
+    watermarkRight:-120,
+    tagSpacing:'.5em',
+    leadSpacing:'.35em',
+    signSpacing:'.15em',
+    safeZone:null
+  },
+  'douyin-vertical': {
+    id:'douyin-vertical',
+    name:'抖音竖版',
+    spec:'1080×1920',
+    width:1080, height:1920,
+    padX:80, padY:0,
+    tagSize:32,    tagMb:60,
+    leadSize:56,   leadMb:50,
+    mainSize:130,
+    signSize:34,   signMt:70,
+    watermarkSize:880,
+    watermarkRight:-90,
+    tagSpacing:'.4em',
+    leadSpacing:'.25em',
+    signSpacing:'.12em',
+    // 抖音竖版右下角点赞/评论/分享按钮 + 底部文案区遮挡
+    // 实测约：右侧 180px 宽 × 高 900px（视频区右下角）+ 底部 350px 高
+    safeZone:{ right:0, bottom:0, width:200, height:900 }
+  },
+  'douyin-horizontal': {
+    id:'douyin-horizontal',
+    name:'抖音横版',
+    spec:'1920×1080',
+    width:1920, height:1080,
+    padX:140, padY:0,
+    tagSize:28,    tagMb:50,
+    leadSize:50,   leadMb:30,
+    mainSize:130,
+    signSize:34,   signMt:60,
+    watermarkSize:880,
+    watermarkRight:-100,
+    tagSpacing:'.45em',
+    leadSpacing:'.3em',
+    signSpacing:'.13em',
+    safeZone:null
+  }
+};
+
+let currentSizeId = 'x-horizontal';
+
+/* ============================================================
+ * 配色方案（沿用原 18 套）
+ * ============================================================ */
+const PALETTES = [
+  {id:'ink-green', name:'墨绿经典', bg:'#1C1C1C', bg2:'#252525', text:'#EDE6D8', hl:'#2D5F4A', sub:'#8A8A8A', sign:'#4A6B60', tag:'#8A8A8A', watermark:'#FFFFFF', pattern:'diagonal', patternOpacity:18},
+  {id:'burgundy', name:'勃艮第酒红', bg:'#141414', bg2:'#1F1515', text:'#F0E8DA', hl:'#8B2635', sub:'#9A9A9A', sign:'#6B4A4E', tag:'#9A9A9A', watermark:'#FFFFFF', pattern:'noise', patternOpacity:22},
+  {id:'midnight-navy', name:'极夜藏青', bg:'#0F1A2E', bg2:'#162138', text:'#F5F5F0', hl:'#E8833A', sub:'#7A8599', sign:'#9FAAB8', tag:'#7A8599', watermark:'#FFFFFF', pattern:'grid', patternOpacity:20},
+  {id:'cream', name:'奶油米白', bg:'#E8E2D4', bg2:'#DED6C4', text:'#2B2416', hl:'#B8611D', sub:'#6B6358', sign:'#8B7F70', tag:'#6B6358', watermark:'#2B2416', pattern:'vlines', patternOpacity:18},
+  {id:'midnight-purple', name:'午夜深紫', bg:'#1A1425', bg2:'#221B30', text:'#EDE4E0', hl:'#C9A27A', sub:'#7A6F85', sign:'#9A8FA5', tag:'#7A6F85', watermark:'#FFFFFF', pattern:'dots', patternOpacity:22},
+  {id:'forest', name:'森林墨绿', bg:'#1F2B24', bg2:'#28362E', text:'#EDE4CF', hl:'#C4A442', sub:'#7A8A7E', sign:'#9AAA9E', tag:'#7A8A7E', watermark:'#FFFFFF', pattern:'crosshatch', patternOpacity:15},
+  {id:'black-gold', name:'纯黑烫金', bg:'#0A0A0A', bg2:'#131313', text:'#F2EDE3', hl:'#B8924A', sub:'#6B6258', sign:'#8A7F70', tag:'#8B7F70', watermark:'#FFFFFF', pattern:'corners', patternOpacity:35},
+  {id:'mini-white', name:'极简素白', bg:'#F5F3EE', bg2:'#EBE8E0', text:'#1A1A1A', hl:'#C8292E', sub:'#888888', sign:'#AAAAAA', tag:'#888888', watermark:'#1A1A1A', pattern:'corners', patternOpacity:40},
+  {id:'morandi', name:'莫兰迪灰蓝', bg:'#2A3441', bg2:'#323D4C', text:'#E8DFD0', hl:'#D4A574', sub:'#8A92A0', sign:'#A8B0BC', tag:'#8A92A0', watermark:'#FFFFFF', pattern:'diagonal', patternOpacity:16},
+  {id:'terracotta', name:'陶土赤陶', bg:'#2B1D18', bg2:'#332521', text:'#F0E4D2', hl:'#D96F3C', sub:'#9A8578', sign:'#B89E8C', tag:'#9A8578', watermark:'#FFFFFF', pattern:'noise', patternOpacity:25},
+  {id:'ocean-deep', name:'深海靛蓝', bg:'#0A1F2E', bg2:'#112838', text:'#E6EDF2', hl:'#5FB3D4', sub:'#6B8598', sign:'#8FA5B8', tag:'#6B8598', watermark:'#FFFFFF', pattern:'dots', patternOpacity:20},
+  {id:'plum-rose', name:'梅子玫瑰', bg:'#2A1A2A', bg2:'#352235', text:'#F0E0E4', hl:'#D87A95', sub:'#907585', sign:'#A890A0', tag:'#907585', watermark:'#FFFFFF', pattern:'diagonal', patternOpacity:14},
+  {id:'olive', name:'橄榄军绿', bg:'#2B2F1F', bg2:'#343828', text:'#EDE6CE', hl:'#B8A248', sub:'#8A8A6E', sign:'#A8A88A', tag:'#8A8A6E', watermark:'#FFFFFF', pattern:'crosshatch', patternOpacity:14},
+  {id:'copper', name:'紫铜暖灰', bg:'#1E1A17', bg2:'#2A241F', text:'#F0E6D6', hl:'#C67B5C', sub:'#8A7C70', sign:'#A8998A', tag:'#8A7C70', watermark:'#FFFFFF', pattern:'noise', patternOpacity:20},
+  {id:'ice-mint', name:'薄荷冰川', bg:'#E8EEE9', bg2:'#DEE5E0', text:'#1F2A24', hl:'#2E8B6F', sub:'#6B7A72', sign:'#8A9A92', tag:'#6B7A72', watermark:'#1F2A24', pattern:'grid', patternOpacity:22},
+  {id:'sand-linen', name:'沙麻浅棕', bg:'#E6DDCF', bg2:'#DCD2C2', text:'#2B2519', hl:'#8B4513', sub:'#776F5E', sign:'#9A907E', tag:'#776F5E', watermark:'#2B2519', pattern:'noise', patternOpacity:20},
+  {id:'newspaper', name:'老报纸灰', bg:'#D9D2C3', bg2:'#CFC7B6', text:'#1A1A1A', hl:'#9B2D20', sub:'#5F5A4D', sign:'#7E7868', tag:'#5F5A4D', watermark:'#1A1A1A', pattern:'vlines', patternOpacity:22},
+  {id:'cyberpunk', name:'暗夜青蓝', bg:'#0E1419', bg2:'#161D24', text:'#EAEFF2', hl:'#00C2A8', sub:'#6B7A85', sign:'#8A99A5', tag:'#6B7A85', watermark:'#FFFFFF', pattern:'grid', patternOpacity:18}
+];
+
+const FONTS = [
+  {id:'auto', name:'跟随主标题', stack:'inherit', weight:'inherit'},
+  {id:'serif-sc', name:'思源宋体·重体', stack:'"Noto Serif SC","Source Han Serif SC","Songti SC",serif', weight:900},
+  {id:'songti', name:'宋体·粗', stack:'"Songti SC","STSong","SimSun",serif', weight:900},
+  {id:'fangsong', name:'仿宋', stack:'"STFangsong","FangSong",serif', weight:700},
+  {id:'kaiti', name:'楷体', stack:'"STKaiti","Kaiti SC","KaiTi",serif', weight:700},
+  {id:'yuanti', name:'圆体·粗', stack:'"PingFang SC","Yuanti SC","Hiragino Sans GB",sans-serif', weight:900},
+  {id:'pingfang', name:'苹方·极粗', stack:'"PingFang SC","Helvetica Neue",sans-serif', weight:900},
+  {id:'heiti', name:'黑体·粗', stack:'"Heiti SC","STHeiti","SimHei",sans-serif', weight:900},
+  {id:'lishu', name:'隶书', stack:'"STLiti","LiSu",serif', weight:700},
+  {id:'xingkai', name:'行楷·手写', stack:'"STXingkai","HanziPen SC",cursive', weight:700},
+  {id:'serif-italic', name:'衬线斜体', stack:'"Noto Serif SC","Songti SC",serif', weight:900, italic:true}
+];
+
+let currentPalette = PALETTES[0];
+
+/* ============================================================
+ * 初始化尺寸 Tab
+ * ============================================================ */
+const sizeTabs = document.getElementById('size-tabs');
+Object.values(SIZES).forEach(s=>{
+  const tab = document.createElement('div');
+  tab.className = 'size-tab' + (s.id===currentSizeId?' active':'');
+  tab.dataset.id = s.id;
+  tab.innerHTML = `<span class="tab-name">${s.name}</span><span class="tab-spec">${s.spec}</span>`;
+  tab.onclick = ()=>switchSize(s.id);
+  sizeTabs.appendChild(tab);
+});
+
+function switchSize(id){
+  currentSizeId = id;
+  document.querySelectorAll('.size-tab').forEach(t=>{
+    t.classList.toggle('active', t.dataset.id===id);
+  });
+  const sz = SIZES[id];
+  const safeField = document.getElementById('safe-zone-field');
+  if(sz.safeZone){
+    safeField.style.display = '';
+    document.body.classList.toggle('show-safe-zone', document.getElementById('f-safe-zone').checked);
+  } else {
+    safeField.style.display = 'none';
+    document.body.classList.remove('show-safe-zone');
+  }
+  render();
+}
+
+/* ============================================================
+ * 配色 / 字体 初始化
+ * ============================================================ */
+const sel = document.getElementById('f-palette');
+const grid = document.getElementById('palette-grid');
+PALETTES.forEach((p,i)=>{
+  const opt = document.createElement('option');
+  opt.value = p.id; opt.textContent = p.name;
+  sel.appendChild(opt);
+
+  const sw = document.createElement('div');
+  sw.className = 'swatch'+(i===0?' active':'');
+  sw.dataset.id = p.id;
+  sw.style.background = p.bg;
+  sw.innerHTML = `
+    <div style="position:absolute;left:10%;top:30%;width:50%;height:12%;background:${p.text};border-radius:2px;"></div>
+    <div style="position:absolute;left:10%;top:50%;width:30%;height:18%;background:${p.hl};border-radius:2px;"></div>
+    <div class="label">${p.name}</div>`;
+  sw.onclick = ()=>{ sel.value = p.id; applyPalette(p.id); };
+  grid.appendChild(sw);
+});
+sel.onchange = ()=>applyPalette(sel.value);
+
+const fontSel = document.getElementById('f-hl-font');
+FONTS.forEach(f=>{
+  const opt = document.createElement('option');
+  opt.value = f.id; opt.textContent = f.name;
+  fontSel.appendChild(opt);
+});
+fontSel.addEventListener('change', render);
+document.getElementById('f-pattern').addEventListener('change', render);
+document.getElementById('f-pattern-opacity').addEventListener('input', render);
+document.getElementById('f-size-mul').addEventListener('input', ()=>{
+  document.getElementById('size-mul-label').textContent = (+document.getElementById('f-size-mul').value).toFixed(2)+'x';
+  render();
+});
+document.getElementById('f-safe-zone').addEventListener('change', e=>{
+  document.body.classList.toggle('show-safe-zone', e.target.checked);
+});
+
+/* ============================================================
+ * 花纹生成
+ * ============================================================ */
+function buildPattern(type, color, opacity){
+  if(type === 'none') return '';
+  const c = encodeURIComponent(color);
+  const o = opacity;
+  const svgs = {
+    dots: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><circle cx='2' cy='2' r='1' fill='${c}' opacity='${o}'/></svg>`,
+    grid: `<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><path d='M60 0H0V60' fill='none' stroke='${c}' stroke-width='0.5' opacity='${o}'/></svg>`,
+    diagonal: `<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><path d='M0 30 L30 0' stroke='${c}' stroke-width='0.6' opacity='${o}'/></svg>`,
+    vlines: `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='40'><line x1='0' y1='0' x2='0' y2='40' stroke='${c}' stroke-width='0.5' opacity='${o}'/></svg>`,
+    noise: `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 ${o*2} 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>`,
+    crosshatch: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><path d='M0 40 L40 0 M-10 10 L10 -10 M30 50 L50 30' stroke='${c}' stroke-width='0.4' opacity='${o}'/></svg>`
+  };
+  const svg = svgs[type];
+  if(!svg) return '';
+  return `url("data:image/svg+xml;utf8,${svg}")`;
+}
+
+// 四角装饰线 - 根据当前画布尺寸动态生成
+function buildCorners(color, opacity){
+  const sz = SIZES[currentSizeId];
+  const W = sz.width, H = sz.height;
+  const inset = Math.round(Math.min(W,H) * 0.08);
+  const armLen = Math.round(Math.min(W,H) * 0.08);
+  const sw = Math.max(1.2, Math.min(W,H) / 800);
+  return `<svg xmlns='http://www.w3.org/2000/svg' width='${W}' height='${H}' style='position:absolute;inset:0;opacity:${opacity}'>
+    <g stroke='${color}' stroke-width='${sw}' fill='none'>
+      <path d='M${inset} ${inset} L${inset} ${inset+armLen} M${inset} ${inset} L${inset+armLen} ${inset}'/>
+      <path d='M${W-inset} ${inset} L${W-inset} ${inset+armLen} M${W-inset} ${inset} L${W-inset-armLen} ${inset}'/>
+      <path d='M${inset} ${H-inset} L${inset} ${H-inset-armLen} M${inset} ${H-inset} L${inset+armLen} ${H-inset}'/>
+      <path d='M${W-inset} ${H-inset} L${W-inset} ${H-inset-armLen} M${W-inset} ${H-inset} L${W-inset-armLen} ${H-inset}'/>
+    </g>
+  </svg>`;
+}
+
+/* ============================================================
+ * 渲染
+ * ============================================================ */
+function parseMain(text){
+  return text.replace(/`([^`]+)`/g, '<span class="hl">$1</span>').replace(/\n/g, '<br>');
+}
+function parseSign(text){
+  return text.split(/\s*[·•]\s*/).map(s=>s.trim()).filter(Boolean)
+    .map((s,i)=> i===0 ? s : `<span class="dot">·</span>${s}`).join('');
+}
+
+function render(){
+  const p = currentPalette;
+  const sz = SIZES[currentSizeId];
+  const cover = document.getElementById('cover');
+
+  cover.style.width = sz.width+'px';
+  cover.style.height = sz.height+'px';
+  cover.style.background = `linear-gradient(135deg, ${p.bg2} 0%, ${p.bg} 60%, ${p.bg} 100%)`;
+
+  const content = document.getElementById('c-content');
+  content.style.padding = `${sz.padY}px ${sz.padX}px`;
+
+  const mul = +document.getElementById('f-size-mul').value;
+
+  // 标签
+  const tagEl = document.getElementById('c-tag');
+  tagEl.textContent = document.getElementById('f-tag').value;
+  tagEl.style.color = p.tag;
+  tagEl.style.fontSize = (sz.tagSize*mul)+'px';
+  tagEl.style.marginBottom = (sz.tagMb*mul)+'px';
+  tagEl.style.letterSpacing = sz.tagSpacing;
+
+  // 引导句
+  const leadEl = document.getElementById('c-lead');
+  leadEl.textContent = document.getElementById('f-lead').value;
+  leadEl.style.color = p.sub;
+  leadEl.style.fontSize = (sz.leadSize*mul)+'px';
+  leadEl.style.marginBottom = (sz.leadMb*mul)+'px';
+  leadEl.style.letterSpacing = sz.leadSpacing;
+
+  // 主标题
+  const mainRaw = document.getElementById('f-main').value;
+  let mainHTML, highlightText = '';
+  if(mainRaw.includes('`')){
+    mainHTML = parseMain(mainRaw);
+    const mm = mainRaw.match(/`([^`]+)`/);
+    highlightText = mm ? mm[1] : '';
+  } else {
+    const m = mainRaw.match(/^(.*?)([\u4e00-\u9fa5]{2})([？?！!。]?)$/);
+    if(m){
+      mainHTML = `${m[1]}<span class="hl">${m[2]}</span>${m[3]}`.replace(/\n/g,'<br>');
+      highlightText = m[2];
+    } else {
+      mainHTML = mainRaw.replace(/\n/g,'<br>');
+      highlightText = mainRaw.slice(-2);
+    }
+  }
+
+  const mainEl = document.getElementById('c-main');
+  mainEl.innerHTML = mainHTML;
+  mainEl.style.color = p.text;
+  mainEl.style.fontSize = (sz.mainSize*mul)+'px';
+
+  const fontId = document.getElementById('f-hl-font').value;
+  const font = FONTS.find(f=>f.id===fontId) || FONTS[0];
+  mainEl.querySelectorAll('.hl').forEach(h=>{
+    h.style.color = p.hl;
+    if(font.id === 'auto'){
+      h.style.fontFamily = '';
+      h.style.fontWeight = '';
+      h.style.fontStyle = '';
+    } else {
+      h.style.fontFamily = font.stack;
+      h.style.fontWeight = font.weight;
+      h.style.fontStyle = font.italic ? 'italic' : 'normal';
+    }
+  });
+
+  // 水印字
+  const watermark = document.getElementById('f-watermark').value.trim()
+    || highlightText.charAt(0)
+    || mainRaw.charAt(0)
+    || '';
+  const wm = document.getElementById('c-watermark');
+  wm.textContent = watermark;
+  wm.style.color = p.watermark;
+  wm.style.fontSize = sz.watermarkSize+'px';
+  wm.style.right = sz.watermarkRight+'px';
+  wm.style.top = '50%';
+  wm.style.transform = 'translateY(-50%)';
+
+  // 背景花纹
+  const patternSel = document.getElementById('f-pattern');
+  const patternOpSlider = document.getElementById('f-pattern-opacity');
+  let patternType = patternSel.value;
+  let patternOpacityPct = +patternOpSlider.value;
+  if(patternType === 'auto'){
+    patternType = p.pattern || 'none';
+    patternOpacityPct = p.patternOpacity || 20;
+    patternOpSlider.value = patternOpacityPct;
+  }
+  const patternOpacity = patternOpacityPct / 100;
+  const patternEl = document.getElementById('c-pattern');
+  if(patternType === 'none'){
+    patternEl.style.backgroundImage = '';
+    patternEl.innerHTML = '';
+  } else if(patternType === 'corners'){
+    patternEl.style.backgroundImage = '';
+    patternEl.innerHTML = buildCorners(p.watermark, patternOpacity);
+  } else {
+    patternEl.innerHTML = '';
+    patternEl.style.backgroundImage = buildPattern(patternType, p.watermark, patternOpacity);
+  }
+
+  // 署名
+  const signEl = document.getElementById('c-sign');
+  signEl.innerHTML = parseSign(document.getElementById('f-sign').value);
+  signEl.style.color = p.sign;
+  signEl.style.fontSize = (sz.signSize*mul)+'px';
+  signEl.style.marginTop = (sz.signMt*mul)+'px';
+  signEl.style.letterSpacing = sz.signSpacing;
+
+  // 安全区参考框
+  const sh = document.getElementById('safe-zone-hint');
+  if(sz.safeZone){
+    Object.assign(sh.style, {
+      right: sz.safeZone.right+'px',
+      bottom: sz.safeZone.bottom+'px',
+      width: sz.safeZone.width+'px',
+      height: sz.safeZone.height+'px'
+    });
+  }
+
+  document.getElementById('size-spec-label').textContent = sz.spec;
+
+  fitPreview();
+}
+
+function fitPreview(){
+  const host = document.querySelector('.scale-host');
+  const inner = document.getElementById('scale-inner');
+  const cover = document.getElementById('cover');
+  const sz = SIZES[currentSizeId];
+  const w = host.clientWidth - 22;
+  const maxH = Math.max(window.innerHeight - 280, 500);
+  const scaleW = w / sz.width;
+  const scaleH = maxH / sz.height;
+  const scale = Math.min(scaleW, scaleH, 1);
+  cover.style.transform = `scale(${scale})`;
+  inner.style.width = (sz.width*scale)+'px';
+  inner.style.height = (sz.height*scale)+'px';
+  document.getElementById('scale-label').textContent = Math.round(scale*100)+'%';
+}
+window.addEventListener('resize', fitPreview);
+
+function applyPalette(id){
+  currentPalette = PALETTES.find(p=>p.id===id) || PALETTES[0];
+  document.querySelectorAll('.swatch').forEach(s=>{
+    s.classList.toggle('active', s.dataset.id===id);
+  });
+  document.getElementById('palette-name').textContent = currentPalette.name;
+  render();
+}
+
+['f-tag','f-lead','f-main','f-watermark','f-sign'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', render);
+});
+
+function randomPalette(){
+  const p = PALETTES[Math.floor(Math.random()*PALETTES.length)];
+  sel.value = p.id;
+  applyPalette(p.id);
+}
+
+function randomHighlight(){
+  const input = document.getElementById('f-main');
+  const raw = input.value.replace(/`/g,'');
+  const chars = [...raw];
+  const cnPositions = [];
+  chars.forEach((c,i)=>{ if(/[\u4e00-\u9fa5]/.test(c)) cnPositions.push(i); });
+  if(cnPositions.length === 0){ input.value = raw; render(); return; }
+  const maxLen = Math.min(3, cnPositions.length);
+  const len = 1 + Math.floor(Math.random() * maxLen);
+  const starts = [];
+  for(let i=0; i<=chars.length-len; i++){
+    if(chars.slice(i,i+len).every(c=>/[\u4e00-\u9fa5]/.test(c))) starts.push(i);
+  }
+  if(starts.length === 0){ input.value = raw; render(); return; }
+  const s = starts[Math.floor(Math.random()*starts.length)];
+  const before = chars.slice(0,s).join('');
+  const hl = chars.slice(s,s+len).join('');
+  const after = chars.slice(s+len).join('');
+  input.value = `${before}\`${hl}\`${after}`;
+  render();
+}
+
+function clearHighlight(){
+  const input = document.getElementById('f-main');
+  input.value = input.value.replace(/`/g,'');
+  render();
+}
+
+function randomWatermark(){
+  const raw = document.getElementById('f-main').value.replace(/`/g,'');
+  const cn = [...raw].filter(c=>/[\u4e00-\u9fa5]/.test(c));
+  if(cn.length === 0) return;
+  const pick = cn[Math.floor(Math.random()*cn.length)];
+  document.getElementById('f-watermark').value = pick;
+  render();
+}
+
+function clearWatermark(){
+  document.getElementById('f-watermark').value = '';
+  render();
+}
+
+async function exportPNG(){
+  const cover = document.getElementById('cover');
+  const sz = SIZES[currentSizeId];
+  const prevTransform = cover.style.transform;
+  // 导出前临时移除安全区参考线
+  const wasSafeShown = document.body.classList.contains('show-safe-zone');
+  document.body.classList.remove('show-safe-zone');
+  cover.style.transform = 'scale(1)';
+
+  try{
+    const dataUrl = await htmlToImage.toPng(cover, {
+      width: sz.width, height: sz.height, pixelRatio:1, cacheBust:true,
+      style:{transform:'scale(1)', transformOrigin:'top left'}
+    });
+    const mainText = document.getElementById('f-main').value
+      .replace(/`/g,'').replace(/\n/g,' ')
+      .replace(/[\\/:*?"<>|]/g,'_').slice(0,20);
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `cover_${sz.id}_${mainText}_${currentPalette.id}.png`;
+    a.click();
+  }catch(e){
+    alert('导出失败：'+e.message);
+  }finally{
+    cover.style.transform = prevTransform;
+    if(wasSafeShown) document.body.classList.add('show-safe-zone');
+    fitPreview();
+  }
+}
+
+// 初始化
+switchSize('x-horizontal');
+setTimeout(fitPreview, 100);
+</script>
+</body>
+</html>
