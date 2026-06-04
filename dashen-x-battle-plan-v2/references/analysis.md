@@ -193,7 +193,7 @@ custom_cats = {
 
 ## 分析结果数据结构
 
-分析完成后，提取以下数据用于PDF生成：
+分析完成后，提取以下数据用于Markdown报告生成：
 
 ```python
 analysis_result = {

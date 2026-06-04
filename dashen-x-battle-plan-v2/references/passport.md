@@ -308,7 +308,7 @@ def save_passport(passport: dict, output_path: str):
 
 ```python
 def extract_growth_trend(passport: dict) -> dict:
-    """提取账号的完整增长曲线数据，用于季度复盘PDF"""
+    """提取账号的完整增长曲线数据，用于季度复盘Markdown报告"""
     analyses = sorted(passport.get('analyses', []), key=lambda x: x['date'])
     
     trend = {

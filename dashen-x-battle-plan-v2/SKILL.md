@@ -1,6 +1,6 @@
 ---
 name: dashen-x-battle-plan
-description: 为X（推特）账号生成专业内容作战计划PDF报告，由 dashen.wang（AI最严厉的父亲）出品。当用户想要分析自己或他人的X账号数据、制定内容策略、生成30天创作计划、分析推特数据CSV、复盘上期计划执行情况时，必须调用本skill。触发词包括：内容作战计划、X创作计划、推特内容策略、分析我的X数据、帮我做个创作计划、做个X账号分析报告、X流量分析、内容规划PDF、dashen作战计划、复盘上期计划、我要复盘、7天复盘、季度复盘。支持首次分析、7天执行复盘、季度深度复盘三种模式，通过账号护照JSON文件实现跨会话数据追踪，无需数据库，用户本地保存即可。
+description: 为X（推特）账号生成专业内容作战计划Markdown报告，由 dashen.wang（AI最严厉的父亲）出品。当用户想要分析自己或他人的X账号数据、制定内容策略、生成30天创作计划、分析推特数据CSV、复盘上期计划执行情况时，必须调用本skill。触发词包括：内容作战计划、X创作计划、推特内容策略、分析我的X数据、帮我做个创作计划、做个X账号分析报告、X流量分析、内容规划MD、内容规划Markdown、dashen作战计划、复盘上期计划、我要复盘、7天复盘、季度复盘。支持首次分析、7天执行复盘、季度深度复盘三种模式，通过账号护照JSON文件实现跨会话数据追踪，无需数据库，用户本地保存即可。
 ---
 
 # dashen-x-battle-plan  v2
@@ -93,12 +93,12 @@ def detect_mode(uploaded_files: list) -> tuple:
 
 ---
 
-## 阶段四：生成PDF
+## 阶段四：生成Markdown报告
 
-调用 `references/pdf_generator.md` 生成PDF。章节根据模式变化：
+调用 `references/markdown_generator.md` 生成 `.md` 格式报告。章节根据模式变化：
 
 ### 首次分析（7章）
-1. 封面 + KPI数据
+1. 标题区 + KPI数据
 2. 数据分析报告（类型对比、月度趋势、TOP帖）
 3. 流量战略（N个板块）
 4. 每日内容框架
@@ -107,7 +107,7 @@ def detect_mode(uploaded_files: list) -> tuple:
 7. KPI目标 + 执行清单
 
 ### 7天执行复盘（9章）
-1. 封面 + 本期 vs 上期 KPI对比双栏
+1. 标题区 + 本期 vs 上期 KPI对比
 2. **执行纪律评分** — A/B/C/D评级 + 逐项拆解
 3. **KPI达成率** — 目标 vs 实际逐项对比表
 4. **本期爆款复盘** — 新爆款分析 + 爆款模式验证
@@ -118,7 +118,7 @@ def detect_mode(uploaded_files: list) -> tuple:
 9. 下期KPI目标
 
 ### 季度深度复盘（11章）
-1. 封面 + 三个月增长总结
+1. 标题区 + 三个月增长总结
 2. **账号成长轨迹** — 从第一期到现在的完整数据脉络
 3. **执行纪律历史** — 每期执行率的趋势分析
 4. **KPI达成历史** — 每个指标的长期趋势
@@ -137,13 +137,13 @@ def detect_mode(uploaded_files: list) -> tuple:
 执行 `references/passport.md` 中的护照更新逻辑，生成更新后的JSON。
 
 两个文件一起交付：
-- `{handle}_作战计划_{日期}.pdf`
+- `{handle}_作战计划_{日期}.md`
 - `{handle}_passport.json`（已更新）
 
 ### 交付话术
 
 **首次分析**：
-> PDF和账号护照都给你了。把护照JSON文件保存好，下次带上它一起来，我就能帮你对比上期的执行效果了。
+> Markdown报告和账号护照都给你了。把护照JSON文件保存好，下次带上它一起来，我就能帮你对比上期的执行效果了。
 > 7天后回来做第一次执行复盘效果最好。
 
 **7天复盘**：
@@ -187,9 +187,9 @@ def detect_mode(uploaded_files: list) -> tuple:
 ## 文件说明
 
 - `references/analysis.md` — 数据分析Python代码（含执行复盘对比逻辑）
-- `references/pdf_generator.md` — PDF生成HTML模板 + 渲染代码（含三种模式章节）
+- `references/markdown_generator.md` — Markdown报告生成规范（含三种模式章节）
 - `references/passport.md` — 账号护照JSON结构定义 + 读写逻辑
-- `assets/logo.svg` — dashen.wang品牌Logo
-- `assets/logo_embed.py` — Logo转base64工具
+- `assets/logo.svg` — dashen.wang品牌Logo（如后续需要转PDF或网页展示可复用）
+- `assets/logo_embed.py` — Logo转base64工具（仅在后续需要HTML/PDF展示时使用）
 
 遇到CSV字段名不标准时，先打印列名映射后再执行分析。

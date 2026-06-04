@@ -1,6 +1,6 @@
 """
-Helper: 读取logo SVG并返回base64 data URI，供PDF HTML模板内嵌使用
-在pdf_generator代码中 import 或直接调用
+Helper: 读取logo SVG并返回base64 data URI，供需要HTML展示时复用。
+当前 Markdown 报告流程不依赖此文件。
 """
 import base64
 import os
