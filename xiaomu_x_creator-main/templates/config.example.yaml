@@ -23,6 +23,7 @@ output:
   tweets: tweets/                  # 萃取产出的短推
   schedule: schedule/              # 排期文件
   competitors: competitors/        # 对标博主爆款原文
+  used_index: used-index.md         # 已使用选题与素材索引
 
 # 排期参数
 scheduling:

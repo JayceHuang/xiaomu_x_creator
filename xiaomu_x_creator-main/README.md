@@ -15,6 +15,7 @@
 - **风格 DNA** — 用 `voice.md` 统一控制语气、格式、禁忌，所有产出风格一致
 - **对标监测** — 采集对标博主爆款，拆结构改写（需配合 agent-reach）
 - **查重** — 自动避开近期已发选题和角度
+- **已用索引** — 用 `used-index.md` 记录已使用素材、选题和输出文件，降低重复生产
 - **人在回路** — 每个选题、每条草稿都停下来等你确认，不会擅自拍板
 
 ## How It Works
@@ -54,7 +55,8 @@ Init 会自动创建工作目录：
 │   └── clippings/
 ├── schedule/           # 排期产出
 ├── tweets/             # 短推产出
-└── competitors/        # 对标爆款存档
+├── competitors/        # 对标爆款存档
+└── used-index.md       # 已使用选题与素材索引
 ```
 
 ## Usage
@@ -93,12 +95,14 @@ xiaomu-x-creator/
 - **写作风格**（语气、禁忌、格式）→ `voice.md`
 - **对标博主** → `benchmarks.md`
 - **内容配比**（原创 50% / 热点 25% / 改写 25%）→ `config.yaml` → `content_mix`
+- **已用记录** → `used-index.md`
 
 ## Notes
 
 - 所有产出是 Markdown 文件，不会自动发布
 - 排期和改写过程中会停下来等你确认
 - 所有路径从 config.yaml 读取，不硬编码
+- 每次排期或短推产出后，会把选题和来源追加到 `used-index.md`
 
 ---
 
