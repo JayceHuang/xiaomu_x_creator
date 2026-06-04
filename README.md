@@ -160,6 +160,5 @@ https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflc
 
 ## 8. 补充说明
 
-- 你原 README 里提到的“豆包电子书”，当前目录里没有对应文件或文件夹，至少在这次扫描结果里没看到。
 - `x-article-in-obsidian` 是本地 Obsidian 插件；X Viral Monitor 改为使用 Chrome Web Store 版本。它们都不是 skill。
 - `getname`、`xiaomu_x_creator-main`、`dashen-x-battle-plan-v2` 都是 skill。
