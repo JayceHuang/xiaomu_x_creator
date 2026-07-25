@@ -1,0 +1,25 @@
+{
+  "name": "article-to-social-cards",
+  "version": "1.0.0",
+  "author": "@bainianAI",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "npm install"
+  },
+  "dependencies": {
+    "marked": "^15.0.7",
+    "highlight.js": "^11.11.1",
+    "sharp": "^0.33.2"
+  },
+  "contributors": [
+    {
+      "name": "@bainianAI",
+      "role": "author"
+    },
+    {
+      "name": "@ai_xiaomu",
+      "role": "iterator"
+    }
+  ]
+}

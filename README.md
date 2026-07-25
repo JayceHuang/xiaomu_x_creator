@@ -5,6 +5,7 @@
 | 路径 | 类型 | 作用 |
 |------|------|------|
 | `getname/` | skill | 长文标题与封面配文生成器，给文章产出多平台标题方案。 |
+| `article-to-social-cards/` | skill | 长文转小红书/抖音图卡 skill，把 Markdown 排成 1080×1440 PNG 图集。 |
 | `xiaomu_x_creator-main/` | skill | X/Twitter 运营主 skill，负责排期、短推改写、素材萃取。 |
 | `dashen-x-battle-plan-v2/` | skill | X 账号内容作战计划 skill，用 CSV 数据生成 Markdown 作战计划报告。 |
 | `x-article-in-obsidian/` | Obsidian 插件 | 把当前 Markdown 文章预览成 X Article 风格，并辅助发布到 X Article 编辑器。 |
@@ -34,6 +35,34 @@
 - 支持微信、X、LinkedIn、小红书等平台。
 - 方法上融合“爆款标题模板”与“认知/哲学框架”两套体系。
 - 增加平台约束校准和最终自检，避免标题承诺与正文错位。
+
+---
+
+## 1.1 `article-to-social-cards/`
+
+这是一个 **长文转社媒图卡 skill**。
+
+### 文件作用
+
+| 文件 | 作用 |
+|------|------|
+| `article-to-social-cards/SKILL.md` | skill 主说明，定义重写、分页、封面公式、导出流程。 |
+| `article-to-social-cards/README.md` | 该 skill 自己的使用说明与署名信息。 |
+| `article-to-social-cards/skill.yaml` | skill 元信息，定义名称、触发词、作者与迭代者。 |
+| `article-to-social-cards/prepare.mjs` | 图片预处理脚本，把本地图片压缩并转 base64。 |
+| `article-to-social-cards/run.js` | 图卡渲染脚本，输出可下载 PNG 的 HTML。 |
+| `article-to-social-cards/examples/` | 示例文章、封面 JSON 与发布文案。 |
+
+### 它解决什么问题
+
+- 把长文重写成适合小红书/抖音图文的分页内容。
+- 按固定封面公式生成高点击率封面结构。
+- 一次导出 1080×1440 PNG，两个平台共用。
+
+### 署名
+
+- **作者**：[@bainianAI](https://x.com/bainianAI)
+- **迭代者**：[@ai_xiaomu](https://x.com/ai_xiaomu)
 
 ---
 
@@ -149,6 +178,7 @@ https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflc
 
 - `xiaomu_x_creator-main/` 是“运营主 skill”，偏执行。
 - `getname/` 是“标题配套 skill”，偏包装。
+- `article-to-social-cards/` 是“图文分发 skill”，把长文转成小红书/抖音图卡。
 - `dashen-x-battle-plan-v2/` 是“分析复盘 skill”，偏策略。
 - `x-article-in-obsidian/` 是写长文和发布 X Article 的编辑器插件。
 - [X Viral Monitor](https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflcnfgfkdfpd) 是看别人/看平台热度的监控插件。
@@ -161,4 +191,10 @@ https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflc
 ## 8. 补充说明
 
 - `x-article-in-obsidian` 是本地 Obsidian 插件；X Viral Monitor 改为使用 Chrome Web Store 版本。它们都不是 skill。
-- `getname`、`xiaomu_x_creator-main`、`dashen-x-battle-plan-v2` 都是 skill。
+- `getname`、`article-to-social-cards`、`xiaomu_x_creator-main`、`dashen-x-battle-plan-v2` 都是 skill。
+
+## 9. 署名约定
+
+- 仓库维护与迭代：[@ai_xiaomu](https://x.com/ai_xiaomu)
+- `article-to-social-cards` 原作者：[@bainianAI](https://x.com/bainianAI)
+- 其他 skill 若另有原作者，会在对应目录的 `README.md` / `SKILL.md` 中单独标注。

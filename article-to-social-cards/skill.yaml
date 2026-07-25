@@ -1,0 +1,21 @@
+name: article-to-social-cards
+description: 将 Markdown 长文重写、分页并排版成 1080×1440 社媒图卡，可批量导出 PNG，适用于小红书和抖音图文。
+version: 1.0.0
+author: "@bainianAI"
+iterator: "@ai_xiaomu"
+triggers:
+  - 生成小红书图文
+  - 做抖音图文
+  - 长文转图片
+  - 文章转图卡
+  - 做图文
+  - 发小红书
+  - 发抖音
+  - 图集
+tags:
+  - content-production
+  - xiaohongshu
+  - douyin
+  - social-cards
+  - markdown
+  - chinese

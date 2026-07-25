@@ -1,0 +1,28 @@
+{
+  "title": "Anthropic黑客松冠军\n不手写一行代码拿下$15,000\n8小时做完 配置全开源",
+  "highlightWords": ["不手写一行代码", "全开源"],
+  "authorityBadge": {
+    "name": "开源项目拆解（上）",
+    "subtitle": "GitHub 42,663 Stars 的配置体系长什么样"
+  },
+  "stats": [
+    { "number": "42.7k", "label": "GitHub Stars", "highlight": true },
+    { "number": "$15k", "label": "冠军奖金" },
+    { "number": "8h", "label": "产品构建时间" },
+    { "number": "100+", "label": "参赛队伍" },
+    { "number": "12", "label": "个专业Agent" },
+    { "number": "30+", "label": "个Skill工作流", "highlight": true }
+  ],
+  "valuePreview": {
+    "title": "看完这篇你会知道",
+    "items": [
+      "这个大佬怎么用 Claude Code <b>8小时造出一个产品</b>",
+      "他的 <b>12个Agent + 30个Skill</b> 分别干什么",
+      "跨会话记忆和持续学习 <b>两个配置怎么工作</b>",
+      "他说的<b>投资模式不投资模型技巧</b>是什么意思"
+    ]
+  },
+  "author": "你的小红书名",
+  "status": "深度拆解",
+  "tags": ["Claude Code", "AI编程", "开源项目"]
+}
