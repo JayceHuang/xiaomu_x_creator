@@ -1,200 +1,77 @@
 # xiaomu_x_creator
 
-## 目录总览
+> 一套面向 X（原 Twitter）的 AI 自媒体运营工作流。
+> 从账号定位、冷启动、素材积累，到短推/长文生产、排期发布、数据复盘与变现，提供一套可以反复执行的内容系统。
 
-| 路径 | 类型 | 作用 |
+## 这是什么？
+
+`xiaomu_x_creator` 不是一个只负责“让 AI 写几条推文”的提示词集合，而是一套围绕 X 自媒体运营搭建的工具箱：
+
+- 用定位和对标，确定你是谁、服务谁、靠什么内容吸粉；
+- 用故事完成冷启动，再用干货接住流量；
+- 把视频、文章、推文、播客等素材沉淀为 Markdown 内容库；
+- 通过 AI 辅助生产短推、引用推文、长文和图卡；
+- 用回复、热点和排期保持稳定出摊；
+- 用 X 数据做复盘，持续调整内容方向；
+- 在积累影响力后，通过平台分成、社群、分佣、广告、服务和咨询等方式变现。
+
+核心路径可以概括为：
+
+`定位与对标 → 冷启动 → 素材库 → 短推/长文 → 互动与热点 → 排期发布 → 数据复盘 → 变现`
+
+## 结果案例
+
+配套飞书文档记录了作者 [@ai_xiaomu](https://x.com/ai_xiaomu) 使用这套思路和工具运营账号的过程：约 2 个月做到 3 万粉。
+
+这个案例的关键并不是某一条“爆文秘诀”，而是把不同内容放到同一套系统里协同工作：
+
+- 故事内容负责让陌生人先认识你；
+- 干货内容负责建立信任；
+- 有传播性的内容负责破圈和获取流量；
+- 素材库与 AI 工作流负责提高持续产出能力；
+- 排期、数据分析和复盘负责让运营从偶然变成可重复执行；
+- 影响力最终承接到平台收益、社群、分佣、广告、服务与咨询。
+
+> 3 万粉是作者账号的过程记录，不代表任何账号都能复制同样结果。X 的算法、政策和收益规则会变化，请结合自己的定位与实际数据验证。
+
+## 完整教程
+
+详细的方法论、执行步骤、提示词、素材库 SOP、短推/长文工作流、账号养成与变现案例，见飞书文档：
+
+[《X 自媒体工作流》完整介绍](https://my.feishu.cn/wiki/WCfcwBSNqi6NU5kySaoc38fVnde?from=from_copylink)
+
+## 仓库内容
+
+| 路径 / 工具 | 在工作流中的位置 | 作用 |
 |------|------|------|
-| `getname/` | skill | 长文标题与封面配文生成器，给文章产出多平台标题方案。 |
-| `article-to-social-cards/` | skill | 长文转小红书/抖音图卡 skill，把 Markdown 排成 1080×1440 PNG 图集。 |
-| `xiaomu_x_creator-main/` | skill | X/Twitter 运营主 skill，负责排期、短推改写、素材萃取。 |
-| `dashen-x-battle-plan-v2/` | skill | X 账号内容作战计划 skill，用 CSV 数据生成 Markdown 作战计划报告。 |
-| `x-article-in-obsidian/` | Obsidian 插件 | 把当前 Markdown 文章预览成 X Article 风格，并辅助发布到 X Article 编辑器。 |
-| [X Viral Monitor](https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflcnfgfkdfpd) | Chrome 插件 | 在 X 页面监控推文热度、速度、排行榜，并支持复制为 Markdown。 |
-| `多平台封面图生成器.html` | 独立工具 | 本地封面图生成器，输出 X / 抖音横竖版封面 PNG。 |
-| `README.md` | 说明文档 | 当前这个总说明。 |
-| `.git/` | Git 元数据 | 版本管理目录。 |
-| `.DS_Store` | 系统文件 | macOS 自动生成，可忽略。 |
+| `xiaomu_x_creator-main/` | 运营主 skill | 初始化 X 内容工作区，管理素材、写作风格、对标账号，生成排期，并把长文/笔记萃取为短推。 |
+| `dashen-x-battle-plan-v2/` | 数据与复盘 | 读取 X Premium 导出的 CSV，生成内容分析、执行计划、复盘报告和账号护照 JSON。 |
+| `getname/` | 标题与包装 | 为长文生成适配 X、公众号、小红书、LinkedIn 等平台的标题和封面配文。 |
+| `x-article-in-obsidian/` | 长文发布 | 在 Obsidian 中预览 X Article 风格内容，并辅助排版和发布。 |
+| `article-to-social-cards/` | 内容再分发 | 将 Markdown 长文重写并排版为小红书/抖音图卡 PNG。 |
+| [X Viral Monitor](https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflcnfgfkdfpd) | 热点与素材 | 监控 X 推文热度、传播速度和排行榜，并支持复制为 Markdown。 |
+| `多平台封面图生成器.html` | 视觉物料 | 本地生成 X 横版、抖音横竖版封面 PNG。 |
 
----
+## 推荐使用顺序
 
-## 1. `getname/`
+1. 先阅读 `xiaomu_x_creator-main/`，完成账号定位、写作风格和对标账号配置。
+2. 建立自己的 Markdown 素材库，持续收集视频、文章、推文、播客和高传播案例。
+3. 用主 skill 生成短推排期，再按需要使用 `getname/`、`x-article-in-obsidian/` 和 `article-to-social-cards/` 完成长文、标题与图卡。
+4. 有了一段时间的数据后，把 X Premium 的内容分析 CSV 交给 `dashen-x-battle-plan-v2/`，做内容分析和下一阶段计划。
+5. 根据复盘结果更新定位、素材库、选题和排期，形成“生产—发布—复盘”的循环。
 
-这是一个 **标题生成 skill**，内部名字叫 `snail`。
+各目录中都有对应的 `README.md` 或 `SKILL.md`，请以目录内说明为准。
 
-### 文件作用
+## 运营原则
 
-| 文件 | 作用 |
-|------|------|
-| `getname/SKILL.md` | skill 主说明，定义标题生成的方法论、流程、输出格式。 |
-| `getname/skill.yaml` | skill 元信息，定义名称、描述、触发词、标签。 |
-| `getname/README.md` | 该 skill 自己的补充说明。 |
+- AI 是放大器，不是替代品：真实经历、判断和人机共创决定内容质量。
+- 不要只追求单条爆文，让不同内容分别承担破圈、信任和转化任务。
+- X 内容有明显生命周期，及时复盘和持续出摊比反复纠结单条数据更重要。
+- 遵守平台规则：不发布色情、违法或政治敏感内容；商业合作按要求标注。
+- 平台规则和工具都会变化，使用前请自行确认当前版本与权限要求。
 
-### 它解决什么问题
+## 署名
 
-- 读完一篇长文后，生成适配不同平台的标题和封面配文。
-- 支持微信、X、LinkedIn、小红书等平台。
-- 方法上融合“爆款标题模板”与“认知/哲学框架”两套体系。
-- 增加平台约束校准和最终自检，避免标题承诺与正文错位。
-
----
-
-## 1.1 `article-to-social-cards/`
-
-这是一个 **长文转社媒图卡 skill**。
-
-### 文件作用
-
-| 文件 | 作用 |
-|------|------|
-| `article-to-social-cards/SKILL.md` | skill 主说明，定义重写、分页、封面公式、导出流程。 |
-| `article-to-social-cards/README.md` | 该 skill 自己的使用说明与署名信息。 |
-| `article-to-social-cards/skill.yaml` | skill 元信息，定义名称、触发词、作者与迭代者。 |
-| `article-to-social-cards/prepare.mjs` | 图片预处理脚本，把本地图片压缩并转 base64。 |
-| `article-to-social-cards/run.js` | 图卡渲染脚本，输出可下载 PNG 的 HTML。 |
-| `article-to-social-cards/examples/` | 示例文章、封面 JSON 与发布文案。 |
-
-### 它解决什么问题
-
-- 把长文重写成适合小红书/抖音图文的分页内容。
-- 按固定封面公式生成高点击率封面结构。
-- 一次导出 1080×1440 PNG，两个平台共用。
-
-### 署名
-
-- **作者**：[@bainianAI](https://x.com/bainianAI)
-- **迭代者**：[@ai_xiaomu](https://x.com/ai_xiaomu)
-
----
-
-## 2. `xiaomu_x_creator-main/`
-
-这是整个目录里最像“主系统”的 **X/Twitter 运营 skill**。
-
-### 文件作用
-
-| 文件 | 作用 |
-|------|------|
-| `xiaomu_x_creator-main/SKILL.md` | skill 总入口，定义路由：`init`、排期、短推改写。 |
-| `xiaomu_x_creator-main/README.md` | 这个 skill 自己的使用说明。 |
-| `xiaomu_x_creator-main/modules/scheduler.md` | 排期模块，负责从素材库与对标账号中生成一周/多天发文排期。 |
-| `xiaomu_x_creator-main/modules/distiller.md` | 萃取模块，负责把文章、笔记、观点改写成短推。 |
-| `xiaomu_x_creator-main/templates/config.example.yaml` | 初始化时生成 `config.yaml` 的示例模板。 |
-| `xiaomu_x_creator-main/templates/voice.example.md` | 写作风格 DNA 模板。 |
-| `xiaomu_x_creator-main/templates/benchmarks.example.md` | 对标博主清单模板。 |
-
-### 它解决什么问题
-
-- 初始化一个 X 内容运营工作区。
-- 管理素材来源、写作风格、对标账号、输出目录。
-- 生成排期文件。
-- 把长文、笔记、聊天内容萃取成可发的短推。
-- 用 `used-index.md` 记录已使用选题与素材，降低重复排期。
-
-### 你可以把它理解成
-
-这是“运营主 skill”，其余一些工具更像它的配套能力。
-
----
-
-## 3. `dashen-x-battle-plan-v2/`
-
-这是一个 **X 账号分析与作战计划 skill**，侧重点不是写推文，而是做数据分析、策略规划和复盘报告。
-
-### 文件作用
-
-| 文件 | 作用 |
-|------|------|
-| `dashen-x-battle-plan-v2/SKILL.md` | skill 主说明，定义首次分析、7 天复盘、季度复盘三种模式，并要求最终输出 Markdown。 |
-| `dashen-x-battle-plan-v2/references/analysis.md` | 数据分析逻辑说明，负责解析 CSV、做指标计算与复盘对比。 |
-| `dashen-x-battle-plan-v2/references/markdown_generator.md` | Markdown 报告生成规范，定义章节结构、表格格式、文件命名和交付方式。 |
-| `dashen-x-battle-plan-v2/references/passport.md` | “账号护照”JSON 的结构与读写逻辑。 |
-| `dashen-x-battle-plan-v2/assets/logo.svg` | dashen.wang 品牌 Logo，当前 Markdown 流程默认不依赖。 |
-| `dashen-x-battle-plan-v2/assets/logo_embed.py` | Logo 转 base64 的辅助脚本，仅在后续需要 HTML/PDF 展示时复用。 |
-
-### 它解决什么问题
-
-- 读取 X 导出的 CSV 数据。
-- 生成内容分析、30 天计划、7 天执行复盘、季度升级报告。
-- 最终交付 `{handle}_作战计划_{日期}.md`。
-- 同时输出 `{handle}_passport.json`，方便跨会话追踪和下次复盘。
-- 不再生成 PDF、HTML 或中间渲染文件。
-
----
-
-## 4. `x-article-in-obsidian/`
-
-这是一个 **Obsidian 插件**，不是 skill。
-
-### 文件作用
-
-| 文件 | 作用 |
-|------|------|
-| `x-article-in-obsidian/manifest.json` | Obsidian 插件清单，定义插件名、版本、最低兼容版本和描述。 |
-| `x-article-in-obsidian/main.js` | 插件主逻辑。核心功能是把当前 Markdown 渲染成 X Article 风格，并生成发布脚本/粘贴内容。 |
-| `x-article-in-obsidian/styles.css` | 插件样式，控制侧边栏和文章预览外观。 |
-
-### 它解决什么问题
-
-- 在 Obsidian 里预览“X 长文”效果。
-- 支持同步滚动、富媒体嵌入。
-- 从代码内容看，还包含把内容写入 X Article 编辑器的辅助脚本能力。
-
----
-
-## 5. X Viral Monitor
-
-这是一个 **Chrome 浏览器插件**，用于监控 X 上推文热度。本地插件目录已删除，改为使用 Chrome Web Store 版本：
-
-https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflcnfgfkdfpd
-
-### 它解决什么问题
-
-- 给 X 页面上的推文打“热度/爆款”标签。
-- 按浏览速度做排行榜。
-- 复制推文为 Markdown。
-- 显示接口速率限制信息，便于监控抓取状态。
-
----
-
-## 6. `多平台封面图生成器.html`
-
-这是一个 **独立 HTML 工具**，直接浏览器打开即可。
-
-### 它解决什么问题
-
-- 生成适配不同平台尺寸的封面图。
-- 支持 X 横版、抖音竖版、抖音横版切换。
-- 支持标题高亮、背景水印字、字体、纹理、配色、安全区预览。
-- 最终导出 PNG。
-
-### 代码特征
-
-- 纯前端单文件工具。
-- 依赖 `html-to-image` 将页面节点导出成图片。
-
----
-
-## 7. 这些文件之间的关系
-
-- `xiaomu_x_creator-main/` 是“运营主 skill”，偏执行。
-- `getname/` 是“标题配套 skill”，偏包装。
-- `article-to-social-cards/` 是“图文分发 skill”，把长文转成小红书/抖音图卡。
-- `dashen-x-battle-plan-v2/` 是“分析复盘 skill”，偏策略。
-- `x-article-in-obsidian/` 是写长文和发布 X Article 的编辑器插件。
-- [X Viral Monitor](https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflcnfgfkdfpd) 是看别人/看平台热度的监控插件。
-- `多平台封面图生成器.html` 是视觉物料制作工具。
-
-合起来看，这个目录更像一套围绕 **X 内容创作、分发、监控、复盘** 的工具箱。
-
----
-
-## 8. 补充说明
-
-- `x-article-in-obsidian` 是本地 Obsidian 插件；X Viral Monitor 改为使用 Chrome Web Store 版本。它们都不是 skill。
-- `getname`、`article-to-social-cards`、`xiaomu_x_creator-main`、`dashen-x-battle-plan-v2` 都是 skill。
-
-## 9. 署名约定
-
-- 仓库维护与迭代：[@ai_xiaomu](https://x.com/ai_xiaomu)
+- 仓库维护与迭代：[黄小木 / @ai_xiaomu](https://x.com/ai_xiaomu)
 - `article-to-social-cards` 原作者：[@bainianAI](https://x.com/bainianAI)
-- 其他 skill 若另有原作者，会在对应目录的 `README.md` / `SKILL.md` 中单独标注。
+- 其他组件如有独立作者，以对应目录中的 `README.md` / `SKILL.md` 标注为准。
