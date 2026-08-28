@@ -34,6 +34,7 @@
 | `getname/` | 标题与包装 | 为长文生成适配 X、公众号、小红书、LinkedIn 等平台的标题和封面配文。 |
 | `x-article-in-obsidian/` | 长文发布 | 在 Obsidian 中预览 X Article 风格内容，并辅助排版和发布。 |
 | `article-to-social-cards/` | 内容再分发 | 将 Markdown 长文重写并排版为小红书/抖音图卡 PNG。 |
+| `minimax-h3-dual-reference/` | 视频生成 | 提供可导入 ComfyUI 的 MiniMax H3 双参考图生视频工作流及模型配置说明。 |
 | [X Viral Monitor](https://chromewebstore.google.com/detail/x-viral-monitor/dkplofpecmjmbhgjgleeflcnfgfkdfpd) | 热点与素材 | 监控 X 推文热度、传播速度和排行榜，并支持复制为 Markdown。 |
 | `多平台封面图生成器.html` | 视觉物料 | 本地生成 X 横版、抖音横竖版封面 PNG。 |
 
