@@ -1,3 +1,15 @@
+## 联系方式
+
+如需交流、合作或反馈，可通过微信联系：
+
+- 微信搜索：`硅基小木`
+- 扫描下方二维码添加微信
+
+<p>
+  <img src="./assets/contact/wechat-search.png" alt="微信搜索：硅基小木" width="420">
+  <img src="./assets/contact/wechat-qr.png" alt="黄小木微信二维码" width="180">
+</p>
+
 ## 完整版视频教程
 
 详细的方法论、执行步骤、提示词、素材库 SOP、短推/长文工作流、账号养成与变现案例，见飞书文档：
